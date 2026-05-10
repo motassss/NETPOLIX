@@ -1,22 +1,18 @@
 from pydantic import BaseModel, Field
 
-class LoginRequest(BaseModel):
-    cedula: str = Field(..., description="1234567890")
-    contraseña: str = Field(..., description="password123")
-#datos pa iniciar sesion :v 
 
-class LoginResponse(BaseModel):
+class LoginRequest(BaseModel):
+    cedula: str = Field(..., description="Cédula del cliente")
+    password: str = Field(..., min_length=6, description="Contraseña del cliente")
+
+
+class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
 
-#lo que devuelve el servidor 
 
-class registroRequest(BaseModel):
-    cedula: str = Field(..., description="1234567890")
-    nombre: str = Field(..., description="John Doe")
-    contraseña: str = Field(..., description="password123")
-    cedula_referido: str | None = None 
-#datos para registrarse
-
-
-
+class RegistroRequest(BaseModel):
+    cedula: str = Field(..., description="Cédula del cliente")
+    nombre: str = Field(..., min_length=1, max_length=100, description="Nombre completo")
+    password: str = Field(..., min_length=6, description="Contraseña")
+    cedula_referido: str | None = Field(None, description="Cédula del cliente que refiere")

@@ -1,45 +1,54 @@
-from fastapi import APIRouter, Depends, query
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.dependencies import get_current_cliente
 from app.services.video_service import VideoService
-from app.schemas.video import VideoCreate, VideoResponse
+from app.schemas.video import VideoCreate, VideoResponse, CalificarRequest
 from app.models.cliente import Cliente
 from typing import List
 
-router = APIRouter(prefix="/videos", tags=["videos"])
+router = APIRouter(prefix="/videos", tags=["Videos"])
 
-@router.post("/", response_model=VideoResponse)
+
+@router.get("/", response_model=List[VideoResponse])
 def listar_videos(
-    skip: int = query(0, ge=0),
-    limit: int = query(20, le=100),
+    skip: int = Query(0, ge=0),
+    limit: int = Query(20, le=100),
     db: Session = Depends(get_db),
-    _: Cliente = Depends(get_current_cliente)
-
+    _: Cliente = Depends(get_current_cliente),
 ):
-    
     service = VideoService(db)
     return service.listar_videos(skip=skip, limit=limit)
+
 
 @router.post("/", response_model=VideoResponse, status_code=201)
 def crear_video(
     datos: VideoCreate,
     db: Session = Depends(get_db),
-    cliente_actual: Cliente = Depends(get_current_cliente)
+    cliente_actual: Cliente = Depends(get_current_cliente),
 ):
-    #CREAR VIDEOM, SOLO PARA ADMINISTRADORES
     if not cliente_actual.is_admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="No tienes permisos para crear videos"
+            detail="No tienes permisos para crear videos",
         )
-    
+
     service = VideoService(db)
-    return service.create_video(datos)  
+    return service.create_video(datos)
+
 
 @router.get("/{isan}/clasificacion")
-
 def ver_calificacion(isan: str, db: Session = Depends(get_db)):
     service = VideoService(db)
-    return service.calcular_clasificacion_promedio(isan)
+    return service.calcular_calificacion_promedio(isan)
 
+
+@router.post("/{isan}/calificar")
+def calificar_video(
+    isan: str,
+    datos: CalificarRequest,
+    db: Session = Depends(get_db),
+    cliente_actual: Cliente = Depends(get_current_cliente),
+):
+    service = VideoService(db)
+    return service.calificar_video(isan, cliente_actual.cedula, datos.puntuacion)

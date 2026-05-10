@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetPolix — Registro</title>
+    <link rel="stylesheet" href="/static/css/login.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <h1>Net Polix</h1>
+            <h2>Crear Cuenta</h2>
+
+            <div id="error-message" class="error-message hidden"></div>
+            <div id="success-message" class="error-message hidden" style="border-color: #2ecc71; color: #2ecc71; background: rgba(46, 204, 113, 0.15);"></div>
+
+            <form id="registro-form">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" required placeholder="Tu nombre completo">
+                </div>
+                <div class="form-group">
+                    <label for="cedula">Cédula</label>
+                    <input type="text" id="cedula" required placeholder="Tu documento de identidad">
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" required minlength="6" placeholder="Mínimo 6 caracteres">
+                </div>
+                <div class="form-group">
+                    <label for="cedula_referido">Código de referido (opcional)</label>
+                    <input type="text" id="cedula_referido" placeholder="Cédula de quien te refiere">
+                </div>
+                <button type="submit" class="btn-primary" id="submit-btn">
+                    Registrarse
+                </button>
+            </form>
+
+            <p class="auth-link">
+                ¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a>
+            </p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { api } from '../js/api.js';
+
+        document.getElementById('registro-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const nombre = document.getElementById('nombre').value;
+            const cedula = document.getElementById('cedula').value;
+            const password = document.getElementById('password').value;
+            const cedula_referido = document.getElementById('cedula_referido').value || null;
+            const btn = document.getElementById('submit-btn');
+            const errorDiv = document.getElementById('error-message');
+            const successDiv = document.getElementById('success-message');
+
+            btn.disabled = true;
+            btn.textContent = 'Registrando...';
+            errorDiv.classList.add('hidden');
+            successDiv.classList.add('hidden');
+
+            try {
+                await api.auth.registro({ nombre, cedula, password, cedula_referido });
+                successDiv.textContent = 'Registro exitoso. Redirigiendo al login...';
+                successDiv.classList.remove('hidden');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+            } catch (error) {
+                errorDiv.textContent = error.message;
+                errorDiv.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Registrarse';
+            }
+        });
+    </script>
+</body>
+</html>

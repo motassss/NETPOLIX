@@ -4,7 +4,7 @@ from app.core.config import settings
 from app.core.database import Base, engine
 from app.routes import auth,videos
 
-Basemetadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title=settings.app_name,

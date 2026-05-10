@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetPolix — Dashboard</title>
+    <link rel="stylesheet" href="/static/css/login.css">
+    <style>
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .dashboard-header h1 {
+            margin: 0;
+        }
+
+        .btn-logout {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #b3b3b3;
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn-logout:hover {
+            border-color: #e50914;
+            color: #e50914;
+        }
+
+        .dashboard-content {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .dashboard-content p {
+            color: #b3b3b3;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .welcome-badge {
+            display: inline-block;
+            background: rgba(229, 9, 20, 0.15);
+            border: 1px solid rgba(229, 9, 20, 0.3);
+            color: #e50914;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container" style="max-width: 600px;">
+        <div class="auth-card">
+            <div class="dashboard-header">
+                <h1>Net Polix</h1>
+                <button class="btn-logout" id="btn-logout">Cerrar sesión</button>
+            </div>
+
+            <div id="error-message" class="error-message hidden"></div>
+
+            <div class="dashboard-content">
+                <div class="welcome-badge" id="welcome-badge">Conectado</div>
+                <h2 style="color: #fff; font-size: 22px; margin-bottom: 12px;">Bienvenido a NetPolix</h2>
+                <p>Plataforma de gestión de contenido audiovisual.</p>
+                <p style="margin-top: 8px; font-size: 14px; color: #666;">
+                    Usa los endpoints de la API para explorar videos, calificaciones y más.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { api } from '../js/api.js';
+        import { auth } from '../js/auth.js';
+
+        if (!auth.estaAutenticado()) {
+            window.location.href = 'login.html';
+        }
+
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            api.auth.logout();
+        });
+    </script>
+</body>
+</html>

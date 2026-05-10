@@ -1,4 +1,4 @@
-import {auth} from './auth.js';
+import { auth } from './auth.js';
 
 const BASE_URL = 'http://localhost:8000';
 
@@ -21,13 +21,13 @@ async function apiFetch(endpoint, options = {}) {
 
     if (response.status === 401) {
         auth.eliminarToken();
-        window.location.href = "/pages/login.html";
+        window.location.href = '/pages/login.html';
         return;
     }
 
     if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || 'Error en la solicitud');
+        throw new Error(error.detail || 'Error en la solicitud');
     }
 
     return response.json();
@@ -35,10 +35,9 @@ async function apiFetch(endpoint, options = {}) {
 
 export const api = {
     auth: {
-
         async login(cedula, password) {
             const data = await apiFetch('/auth/login', {
-                method: "POST",
+                method: 'POST',
                 body: JSON.stringify({ cedula, password }),
             });
             auth.guardarToken(data.access_token);
@@ -46,26 +45,32 @@ export const api = {
         },
 
         async registro(datos) {
-            return apiFetch("/auth/registo", {
-                method: "POST",
+            return apiFetch('/auth/registro', {
+                method: 'POST',
                 body: JSON.stringify(datos),
             });
         },
 
         logout() {
             auth.eliminarToken();
-            window.location.href = "/pages/login.html";
-        }
+            window.location.href = '/pages/login.html';
+        },
     },
 
     videos: {
-        async listar (page = 0) {
-            return apiFetch("/videos/?skip=${page * 20}&limit=20");
-
+        async listar(page = 0) {
+            return apiFetch(`/videos/?skip=${page * 20}&limit=20`);
         },
-        async verCalificacion(isan) {
-            return apiFetch(`/videos/${isan}/calificacion`);
-        }
-    }
 
+        async verCalificacion(isan) {
+            return apiFetch(`/videos/${isan}/clasificacion`);
+        },
+
+        async calificar(isan, puntuacion) {
+            return apiFetch(`/videos/${isan}/calificar`, {
+                method: 'POST',
+                body: JSON.stringify({ puntuacion }),
+            });
+        },
+    },
 };
