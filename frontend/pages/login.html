@@ -1,73 +1,210 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>☆*: .｡. o(≧▽≦)o .｡.:*☆ NET POLIX :3 </title>
-    <link rel="stylesheet" href="/static/css/login.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NetPolix — Iniciar Sesión</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#e50914;--red-b:#ff2230;--red-d:rgba(229,9,20,.14);--red-g:rgba(229,9,20,.3);
+  --bg:#05050a;--s1:#0d0d14;--s2:#121218;--s3:#191920;--s4:#202028;
+  --b1:rgba(255,255,255,.06);--b2:rgba(255,255,255,.11);--b3:rgba(255,255,255,.18);
+  --t1:#ffffff;--t2:rgba(255,255,255,.82);--t3:rgba(255,255,255,.52);--t4:rgba(255,255,255,.3);--t5:rgba(255,255,255,.14);
+  --fd:'Barlow Condensed',sans-serif;--fb:'Sora',sans-serif;--fm:'JetBrains Mono',monospace;
+  --ec:cubic-bezier(.16,1,.3,1);
+}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{font-family:var(--fb);background:var(--bg);color:var(--t2);min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--s4);border-radius:3px}
+::selection{background:var(--red-d);color:var(--t1)}
+ 
+.scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.scene-grad{position:absolute;inset:0;background:
+  radial-gradient(ellipse 70% 60% at 10% 15%,rgba(229,9,20,.13) 0%,transparent 60%),
+  radial-gradient(ellipse 50% 40% at 90% 85%,rgba(229,9,20,.07) 0%,transparent 55%)}
+.scene-grid{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(229,9,20,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(229,9,20,.04) 1px,transparent 1px);
+  background-size:48px 48px;
+  -webkit-mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,black 20%,transparent 100%);
+  mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,black 20%,transparent 100%)}
+.orb{position:absolute;border-radius:50%;filter:blur(70px);animation:orbF 18s ease-in-out infinite}
+.o1{width:500px;height:500px;background:radial-gradient(circle,rgba(229,9,20,.16) 0%,transparent 70%);top:-180px;left:-160px}
+.o2{width:400px;height:400px;background:radial-gradient(circle,rgba(229,9,20,.09) 0%,transparent 70%);bottom:-120px;right:-120px;animation-delay:-7s}
+@keyframes orbF{0%,100%{transform:translate(0,0)}40%{transform:translate(24px,-18px)}70%{transform:translate(-16px,22px)}}
+ 
+.shell{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+ 
+.vis{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:56px}
+.vis-bg{position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(229,9,20,.18) 0%,transparent 50%),
+    linear-gradient(to top,rgba(5,5,10,.97) 0%,rgba(5,5,10,.2) 100%);z-index:1}
+.vis-grid{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(229,9,20,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(229,9,20,.07) 1px,transparent 1px);
+  background-size:40px 40px;z-index:0}
+.vis-body{position:relative;z-index:2}
+.vis-tag{font-family:var(--fd);font-size:clamp(44px,5.5vw,72px);font-weight:800;line-height:.95;text-transform:uppercase;color:var(--t1);letter-spacing:-.5px;margin-bottom:18px}
+.vis-tag em{font-style:normal;color:transparent;display:block;-webkit-text-stroke:2px var(--red);text-shadow:0 0 40px var(--red-g)}
+.vis-sub{color:var(--t4);font-size:13.5px;line-height:1.75;max-width:300px;margin-bottom:28px}
+.vis-dots{display:flex;gap:7px;align-items:center}
+.vis-dots span{width:5px;height:5px;border-radius:50%;background:var(--t5)}
+.vis-dots span:first-child{width:22px;height:4px;border-radius:2px;background:var(--red);box-shadow:0 0 10px var(--red-g)}
+ 
+.auth-panel{display:flex;align-items:center;justify-content:center;padding:40px 32px;background:var(--bg);position:relative}
+.auth-panel::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 50% 50%,rgba(229,9,20,.035) 0%,transparent 70%);pointer-events:none}
+.box{width:100%;max-width:400px;position:relative;z-index:1;animation:slideUp .7s var(--ec) both}
+ 
+.logo{display:flex;align-items:center;gap:10px;margin-bottom:44px;text-decoration:none}
+.logo-mark{width:34px;height:34px;background:var(--red);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:17px;font-weight:800;color:#fff;box-shadow:0 0 20px var(--red-g);flex-shrink:0}
+.logo-name{font-family:var(--fd);font-size:20px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--t1)}
+.logo-name b{color:var(--red);font-weight:800}
+ 
+.h-title{font-family:var(--fd);font-size:40px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--t1);line-height:1;margin-bottom:6px}
+.h-sub{font-size:13px;color:var(--t4);margin-bottom:36px}
+ 
+.fg{margin-bottom:20px;position:relative}
+.fl{display:block;font-size:10.5px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:var(--t4);margin-bottom:8px;transition:color .25s}
+.fi{width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:10px;padding:13px 44px 13px 15px;color:var(--t1);font-family:var(--fb);font-size:14.5px;outline:none;transition:border-color .25s,background .25s,box-shadow .25s}
+.fi::placeholder{color:var(--t5);font-size:13.5px}
+.fi:hover{border-color:var(--b2);background:var(--s3)}
+.fi:focus{border-color:rgba(229,9,20,.5);background:var(--s3);box-shadow:0 0 0 3px rgba(229,9,20,.09),0 0 24px rgba(229,9,20,.07)}
+.fg:focus-within .fl{color:var(--red)}
+.ficon{position:absolute;right:14px;bottom:14px;color:var(--t5);font-size:15px;pointer-events:none;transition:color .25s;background:none;border:none;cursor:pointer;font-family:inherit}
+.fg:focus-within .ficon{color:rgba(229,9,20,.7)}
+ 
+.btn-p{width:100%;margin-top:8px;padding:14px;background:var(--red);color:#fff;font-family:var(--fd);font-size:16px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:none;border-radius:10px;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 4px 24px rgba(229,9,20,.42);transition:background .2s,box-shadow .2s,transform .15s}
+.btn-p:hover:not(:disabled){background:var(--red-b);box-shadow:0 6px 36px rgba(229,9,20,.6);transform:translateY(-1px)}
+.btn-p:active:not(:disabled){transform:scale(.98)}
+.btn-p:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+.btn-p.ld{color:transparent}
+.btn-p.ld::before{content:'';position:absolute;width:17px;height:17px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .65s linear infinite;top:50%;left:50%;transform:translate(-50%,-50%)}
+ 
+.btn-row{display:flex;gap:8px;margin-top:12px}
+.btn-g{flex:1;padding:10px;background:var(--s2);border:1px solid var(--b1);color:var(--t3);font-family:var(--fb);font-size:12.5px;font-weight:500;border-radius:10px;cursor:pointer;transition:border-color .2s,background .2s,color .2s}
+.btn-g:hover{border-color:var(--b2);background:var(--s3);color:var(--t2)}
+ 
+.divider{display:flex;align-items:center;gap:10px;margin:18px 0;color:var(--t5);font-size:10px;letter-spacing:1.5px;text-transform:uppercase}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--b1)}
+ 
+.msg{display:flex;align-items:center;gap:9px;padding:11px 14px;border-radius:10px;font-size:13px;margin-bottom:16px;animation:slideUp .3s var(--ec)}
+.msg-err{background:rgba(229,9,20,.08);border:1px solid rgba(229,9,20,.22);color:#ff7070}
+.hidden{display:none!important}
+ 
+.alink{text-align:center;margin-top:22px;font-size:12.5px;color:var(--t4)}
+.alink a{color:var(--red);text-decoration:none;font-weight:500;transition:color .2s}
+.alink a:hover{color:var(--red-b);text-decoration:underline;text-underline-offset:3px}
+ 
+@keyframes slideUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+ 
+@media(max-width:860px){.shell{grid-template-columns:1fr}.vis{display:none}}
+@media(max-width:480px){.auth-panel{padding:28px 20px}.h-title{font-size:34px}}
+</style>
 </head>
 <body>
-    <div class="auth-container">
-    </div class="auth-card">
-        <h1> Net Polix </h1>
-        <h2> INICIAR SESION </h2>
-
-        <div id="error-message" class="error-message hidden"></div>
-
-  <form id="login-form">
-                <div class="form-group">
-                    <label for="cedula">Cédula</label>
-                    <input type="text" id="cedula" required placeholder="Tu documento de identidad">
-                </div>
-                <div class="form-group">
-                    <label for="password">Contraseña</label>
-                    <input type="password" id="password" required minlength="6">
-                </div>
-                <button type="submit" class="btn-primary" id="submit-btn">
-                    Entrar
-                </button>
-            </form>
-            
-            <p class="auth-link">
-                ¿No tienes cuenta? <a href="registro.html">Regístrate aquí</a>
-            </p>
-        </div>
+ 
+<div class="scene">
+  <div class="scene-grad"></div>
+  <div class="scene-grid"></div>
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+</div>
+ 
+<div class="shell">
+ 
+  <div class="vis">
+    <div class="vis-grid"></div>
+    <div class="vis-bg"></div>
+    <div class="vis-body">
+      <div class="vis-tag">La plataforma<br>audiovisual<em>❤️.</em></div>
+      <p class="vis-sub">Gestión inteligente de contenido audiovisual de valery. Explora videos, calificaciones y métricas en un solo lugar.</p>
+      <div class="vis-dots"><span></span><span></span><span></span><span></span></div>
     </div>
-    
-    <script type="module">
-        import { api } from "../js/api.js";
-        import { auth } from "../js/auth.js";
-        
-        // Si ya está autenticado, redirigir al dashboard
-        if (auth.estaAutenticado()) {
-            window.location.href = "dashboard.html";
-        }
-        
-        document.getElementById("login-form").addEventListener("submit", async (e) => {
-            e.preventDefault(); // Evita que el formulario recargue la página
-            
-            const cedula = document.getElementById("cedula").value;
-            const password = document.getElementById("password").value;
-            const btn = document.getElementById("submit-btn");
-            const errorDiv = document.getElementById("error-message");
-            
-            // Deshabilitamos el botón mientras carga
-            btn.disabled = true;
-            btn.textContent = "Cargando...";
-            errorDiv.classList.add("hidden");
-            
-            try {
-                await api.auth.login(cedula, password);
-                window.location.href = "dashboard.html"; // Login exitoso
-            } catch (error) {
-                errorDiv.textContent = error.message;
-                errorDiv.classList.remove("hidden");
-            } finally {
-                btn.disabled = false;
-                btn.textContent = "Entrar";
-            }
-        });
-    </script>
+  </div>
+ 
+  <div class="auth-panel">
+    <div class="box">
+ 
+      <a href="#" class="logo">
+        <div class="logo-mark">N</div>
+        <span class="logo-name">Net<b>Polix</b></span>
+      </a>
+ 
+      <h1 class="h-title">Bienvenido</h1>
+      <p class="h-sub">Ingresa tus credenciales para continuar</p>
+ 
+      <div id="error-message" class="msg msg-err hidden" role="alert">
+        <span>⚠</span><span id="error-text"></span>
+      </div>
+ 
+      <form id="login-form" novalidate autocomplete="on">
+        <div class="fg">
+          <label class="fl" for="cedula">Cédula</label>
+          <input type="text" id="cedula" class="fi" required placeholder="Tu documento de identidad" autocomplete="username">
+          <span class="ficon" style="pointer-events:none">◎</span>
+        </div>
+        <div class="fg">
+          <label class="fl" for="password">Contraseña</label>
+          <input type="password" id="password" class="fi" required minlength="6" placeholder="Mínimo 6 caracteres" autocomplete="current-password">
+          <button type="button" id="toggle-pw" class="ficon" style="pointer-events:auto;cursor:pointer" aria-label="Mostrar contraseña">👁</button>
+        </div>
+        <button type="submit" class="btn-p" id="submit-btn">Iniciar Sesión</button>
+      </form>
+ 
+      <div class="divider">o continúa</div>
+      <div class="btn-row">
+        <button class="btn-g">🔑 Demo</button>
+        <button class="btn-g">📋 Docs API</button>
+      </div>
+ 
+      <p class="alink">¿No tienes cuenta? <a href="registro.html">Regístrate aquí</a></p>
+    </div>
+  </div>
+ 
+</div>
+ 
+<script type="module">
+  import { api } from "../js/api.js";
+  import { auth } from "../js/auth.js";
+ 
+  if (auth.estaAutenticado()) window.location.href = "dashboard.html";
+ 
+  const form     = document.getElementById("login-form");
+  const btn      = document.getElementById("submit-btn");
+  const errDiv   = document.getElementById("error-message");
+  const errText  = document.getElementById("error-text");
+  const togglePw = document.getElementById("toggle-pw");
+  const pwInput  = document.getElementById("password");
+ 
+  togglePw.addEventListener("click", () => {
+    const show = pwInput.type === "password";
+    pwInput.type = show ? "text" : "password";
+    togglePw.textContent = show ? "🙈" : "👁";
+  });
+ 
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const cedula   = document.getElementById("cedula").value.trim();
+    const password = pwInput.value;
+    btn.disabled = true;
+    btn.classList.add("ld");
+    errDiv.classList.add("hidden");
+    try {
+      await api.auth.login(cedula, password);
+      btn.textContent = "✓ Acceso concedido";
+      btn.style.background = "#16a34a";
+      btn.style.boxShadow = "0 4px 20px rgba(22,163,74,.4)";
+      setTimeout(() => { window.location.href = "dashboard.html"; }, 600);
+    } catch (err) {
+      errText.textContent = err.message;
+      errDiv.classList.remove("hidden");
+      btn.disabled = false;
+      btn.classList.remove("ld");
+    }
+  });
+</script>
 </body>
 </html>

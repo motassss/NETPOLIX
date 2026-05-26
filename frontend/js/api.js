@@ -1,6 +1,6 @@
 import { auth } from './auth.js';
 
-const BASE_URL = 'http://localhost:8000';
+const BASE_URL = 'https://netpolix.onrender.com';
 
 async function apiFetch(endpoint, options = {}) {
     const token = auth.obtenerToken();
