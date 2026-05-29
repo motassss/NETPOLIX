@@ -14,6 +14,8 @@ from app.models import historial, carrito, renta  # noqa: F401 — register mode
 from app.core.migrations import run_migrations
 import os
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 Base.metadata.create_all(bind=engine)
 run_migrations(engine)
 
@@ -33,36 +35,32 @@ app.add_middleware(
 )
 
 # Montar archivos estáticos
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "..", "static")), name="static")
 
 # Rutas de páginas del frontend
-@app.get("/", response_class=FileResponse)
+@app.get("/")
 async def root():
-    return FileResponse("pages/index.html")
+    return FileResponse(os.path.join(BASE_DIR, "..", "pages", "index.html"))
 
-@app.get("/dashboard", response_class=FileResponse)
+@app.get("/dashboard")
 async def dashboard():
-    return FileResponse("pages/dashboard.html")
+    return FileResponse(os.path.join(BASE_DIR, "..", "pages", "dashboard.html"))
 
-@app.get("/login", response_class=FileResponse)
+@app.get("/login")
 async def login_page():
-    return FileResponse("pages/login.html")
+    return FileResponse(os.path.join(BASE_DIR, "..", "pages", "login.html"))
 
-@app.get("/registro", response_class=FileResponse)
+@app.get("/registro")
 async def registro_page():
-    return FileResponse("pages/registro.html")
+    return FileResponse(os.path.join(BASE_DIR, "..", "pages", "registro.html"))
 
-@app.get("/perfil", response_class=FileResponse)
+@app.get("/perfil")
 async def perfil_page():
-    return FileResponse("pages/perfil.html")
+    return FileResponse(os.path.join(BASE_DIR, "..", "pages", "perfil.html"))
 
-@app.get("/mi-lista")
-async def mi_lista_page():
-    return RedirectResponse(url="/dashboard", status_code=302)
-
-@app.get("/carrito", response_class=FileResponse)
+@app.get("/carrito")
 async def carrito_page():
-    return FileResponse("pages/carrito.html")
+    return FileResponse(os.path.join(BASE_DIR, "..", "pages", "carrito.html"))
 
 @app.on_event("startup")
 async def startup_event():
