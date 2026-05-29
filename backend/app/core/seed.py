@@ -27,18 +27,7 @@ ADMIN_DATA = {
 }
 
 PELICULAS = [
-    {
-        "isan": "0000-0000-1A2B-0000-S-0000-0001",
-        "titulo_original": "Inception",
-        "anio_produccion": 2010,
-        "duracion": 148,
-        "tipo": "Película",
-        "descripcion": "Un ladrón especializado en robar secretos del subconsciente mientras sueña recibe la misión de plantar una idea en la mente de un empresario.",
-        "imagen_url": "/static/img/inception.webp",
-        "trailer_url": "",
-        "clasificacion_id": 1,
-        "categorias": ["Accion", "Ciencia Ficcion"],
-    },
+
     {
         "isan": "0000-0000-1A2B-0000-S-0000-0003",
         "titulo_original": "The Dark Knight",
