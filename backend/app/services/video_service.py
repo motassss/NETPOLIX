@@ -16,6 +16,47 @@ class VideoService:
     def listar_videos(self, skip: int = 0, limit: int = 20) -> list[Video]:
         return self.repo.get_all(skip=skip, limit=limit)
 
+    def listar_por_categoria(self, categoria_nombre: str) -> list[Video]:
+        from app.models.categoria import Categoria
+        cat = self.db.query(Categoria).filter(Categoria.nombre == categoria_nombre).first()
+        if not cat:
+            return []
+        return [v for v in cat.videos]
+
+    def buscar(self, query: str) -> list[Video]:
+        return self.db.query(Video).filter(
+            Video.titulo_original.ilike(f"%{query}%")
+        ).all()
+
+    def tendencias(self) -> list[Video]:
+        from app.models.calificacion import Calificacion
+        from sqlalchemy import func
+        subq = (
+            self.db.query(
+                Calificacion.video_isan,
+                func.count(Calificacion.id).label("votos")
+            )
+            .group_by(Calificacion.video_isan)
+            .subquery()
+        )
+        results = (
+            self.db.query(Video)
+            .outerjoin(subq, Video.isan == subq.c.video_isan)
+            .order_by(subq.c.votos.desc().nullslast())
+            .limit(20)
+            .all()
+        )
+        return results
+
+    def obtener_por_isan(self, isan: str) -> Video:
+        video = self.repo.get_by_isan(isan)
+        if not video:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Video con ISAN {isan} no encontrado",
+            )
+        return video
+
     def create_video(self, datos: VideoCreate) -> Video:
         if self.repo.get_by_isan(datos.isan):
             raise HTTPException(

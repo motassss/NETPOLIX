@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NetPolix — Crear Cuenta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#e50914;--red-b:#ff2230;--red-d:rgba(229,9,20,.14);--red-g:rgba(229,9,20,.3);
+  --bg:#05050a;--s2:#121218;--s3:#191920;--s4:#202028;
+  --b1:rgba(255,255,255,.06);--b2:rgba(255,255,255,.11);
+  --t1:#ffffff;--t2:rgba(255,255,255,.82);--t3:rgba(255,255,255,.52);--t4:rgba(255,255,255,.3);--t5:rgba(255,255,255,.14);
+  --fd:'Barlow Condensed',sans-serif;--fb:'Sora',sans-serif;
+  --ec:cubic-bezier(.16,1,.3,1);
+}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:var(--fb);background:var(--bg);color:var(--t2);min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--s4);border-radius:3px}
+::selection{background:var(--red-d);color:var(--t1)}
+ 
+.scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.scene-grad{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 10% 15%,rgba(229,9,20,.13) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 90% 85%,rgba(229,9,20,.07) 0%,transparent 55%)}
+.scene-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(229,9,20,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(229,9,20,.04) 1px,transparent 1px);background-size:48px 48px;-webkit-mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,black 20%,transparent 100%);mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,black 20%,transparent 100%)}
+.orb{position:absolute;border-radius:50%;filter:blur(70px);animation:orbF 18s ease-in-out infinite}
+.o1{width:500px;height:500px;background:radial-gradient(circle,rgba(229,9,20,.16) 0%,transparent 70%);top:-180px;left:-160px}
+.o2{width:400px;height:400px;background:radial-gradient(circle,rgba(229,9,20,.09) 0%,transparent 70%);bottom:-120px;right:-120px;animation-delay:-7s}
+@keyframes orbF{0%,100%{transform:translate(0,0)}40%{transform:translate(24px,-18px)}70%{transform:translate(-16px,22px)}}
+ 
+.shell{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+ 
+.vis{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:56px}
+.vis-bg{position:absolute;inset:0;background:linear-gradient(135deg,rgba(229,9,20,.18) 0%,transparent 50%),linear-gradient(to top,rgba(5,5,10,.97) 0%,rgba(5,5,10,.2) 100%);z-index:1}
+.vis-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(229,9,20,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(229,9,20,.07) 1px,transparent 1px);background-size:40px 40px;z-index:0}
+.vis-body{position:relative;z-index:2}
+.vis-tag{font-family:var(--fd);font-size:clamp(44px,5.5vw,72px);font-weight:800;line-height:.95;text-transform:uppercase;color:var(--t1);letter-spacing:-.5px;margin-bottom:18px}
+.vis-tag em{font-style:normal;color:transparent;display:block;-webkit-text-stroke:2px var(--red);text-shadow:0 0 40px var(--red-g)}
+.vis-sub{color:var(--t4);font-size:13.5px;line-height:1.75;max-width:300px;margin-bottom:28px}
+.vis-dots{display:flex;gap:7px;align-items:center}
+.vis-dots span{width:5px;height:5px;border-radius:50%;background:var(--t5)}
+.vis-dots span:first-child{width:22px;height:4px;border-radius:2px;background:var(--red);box-shadow:0 0 10px var(--red-g)}
+ 
+.auth-panel{display:flex;align-items:center;justify-content:center;padding:40px 32px;background:var(--bg);position:relative;overflow-y:auto}
+.auth-panel::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 50% 50%,rgba(229,9,20,.035) 0%,transparent 70%);pointer-events:none}
+.box{width:100%;max-width:420px;position:relative;z-index:1;animation:slideUp .7s var(--ec) both;padding:20px 0}
+ 
+.logo{display:flex;align-items:center;gap:10px;margin-bottom:36px;text-decoration:none}
+.logo-mark{width:34px;height:34px;background:var(--red);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:17px;font-weight:800;color:#fff;box-shadow:0 0 20px var(--red-g);flex-shrink:0}
+.logo-name{font-family:var(--fd);font-size:20px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--t1)}
+.logo-name b{color:var(--red);font-weight:800}
+ 
+.h-title{font-family:var(--fd);font-size:38px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--t1);line-height:1;margin-bottom:6px}
+.h-sub{font-size:13px;color:var(--t4);margin-bottom:24px}
+ 
+/* STEPS */
+.steps{display:flex;align-items:center;gap:6px;margin-bottom:28px}
+.step{width:28px;height:28px;border-radius:50%;background:var(--s4);border:1px solid var(--b1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--t4);transition:all .3s var(--ec);flex-shrink:0}
+.step.active{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 0 14px var(--red-g)}
+.step.done{background:#16a34a;border-color:#16a34a;color:#fff}
+.step-line{flex:1;height:1px;background:var(--b1)}
+.step-line.active{background:linear-gradient(90deg,var(--red),var(--b1))}
+ 
+.fg{margin-bottom:18px;position:relative}
+.fl{display:block;font-size:10.5px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:var(--t4);margin-bottom:8px;transition:color .25s}
+.fl .opt-badge{margin-left:7px;font-size:9px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--t5);background:var(--s4);padding:2px 6px;border-radius:4px;vertical-align:1px}
+.fi{width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:10px;padding:13px 44px 13px 15px;color:var(--t1);font-family:var(--fb);font-size:14.5px;outline:none;transition:border-color .25s,background .25s,box-shadow .25s}
+.fi::placeholder{color:var(--t5);font-size:13.5px}
+.fi:hover{border-color:var(--b2);background:var(--s3)}
+.fi:focus{border-color:rgba(229,9,20,.5);background:var(--s3);box-shadow:0 0 0 3px rgba(229,9,20,.09)}
+.fg:focus-within .fl{color:var(--red)}
+.ficon{position:absolute;right:14px;bottom:14px;color:var(--t5);font-size:15px;pointer-events:none;transition:color .25s;background:none;border:none;font-family:inherit}
+.fg:focus-within .ficon{color:rgba(229,9,20,.7)}
+ 
+/* STRENGTH BAR */
+.str-bar{display:flex;gap:4px;margin-top:7px}
+.str-seg{flex:1;height:3px;border-radius:2px;background:var(--s4);transition:background .25s}
+.str-seg.weak{background:#ef4444}
+.str-seg.fair{background:#f59e0b}
+.str-seg.strong{background:#22c55e}
+ 
+.btn-p{width:100%;margin-top:8px;padding:14px;background:var(--red);color:#fff;font-family:var(--fd);font-size:16px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:none;border-radius:10px;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 4px 24px rgba(229,9,20,.42);transition:background .2s,box-shadow .2s,transform .15s}
+.btn-p:hover:not(:disabled){background:var(--red-b);box-shadow:0 6px 36px rgba(229,9,20,.6);transform:translateY(-1px)}
+.btn-p:active:not(:disabled){transform:scale(.98)}
+.btn-p:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+.btn-p.ld{color:transparent}
+.btn-p.ld::before{content:'';position:absolute;width:17px;height:17px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .65s linear infinite;top:50%;left:50%;transform:translate(-50%,-50%)}
+ 
+.msg{display:flex;align-items:center;gap:9px;padding:11px 14px;border-radius:10px;font-size:13px;margin-bottom:16px;animation:slideUp .3s var(--ec)}
+.msg-err{background:rgba(229,9,20,.08);border:1px solid rgba(229,9,20,.22);color:#ff7070}
+.msg-ok{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.22);color:#4ade80}
+.hidden{display:none!important}
+ 
+.alink{text-align:center;margin-top:20px;font-size:12.5px;color:var(--t4)}
+.alink a{color:var(--red);text-decoration:none;font-weight:500;transition:color .2s}
+.alink a:hover{color:var(--red-b);text-decoration:underline;text-underline-offset:3px}
+ 
+@keyframes slideUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+ 
+@media(max-width:860px){.shell{grid-template-columns:1fr}.vis{display:none}}
+@media(max-width:480px){.auth-panel{padding:24px 16px}.h-title{font-size:32px}}
+</style>
+</head>
+<body>
+ 
+<div class="scene">
+  <div class="scene-grad"></div>
+  <div class="scene-grid"></div>
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+</div>
+ 
+<div class="shell">
+ 
+  <div class="vis">
+    <div class="vis-grid"></div>
+    <div class="vis-bg"></div>
+    <div class="vis-body">
+      <div class="vis-tag">Únete a<br>la mejor<em>Plataforma.</em></div>
+      <p class="vis-sub">Crea tu cuenta en segundos y accede a toda la gestión de contenido audiovisual de NetPolix.</p>
+      <div class="vis-dots"><span></span><span></span><span></span><span></span></div>
+    </div>
+  </div>
+ 
+  <div class="auth-panel">
+    <div class="box">
+ 
+      <a href="/login" class="logo">
+        <div class="logo-mark">N</div>
+        <span class="logo-name">Net<b>Polix</b></span>
+      </a>
+ 
+      <h1 class="h-title">Crear Cuenta</h1>
+      <p class="h-sub">Completa tu perfil para empezar</p>
+ 
+      <div class="steps">
+        <div class="step active" id="s1">1</div>
+        <div class="step-line active" id="l1"></div>
+        <div class="step" id="s2">2</div>
+        <div class="step-line" id="l2"></div>
+        <div class="step" id="s3">✓</div>
+      </div>
+ 
+      <div id="error-message" class="msg msg-err hidden" role="alert">
+        <span>⚠</span><span id="error-text"></span>
+      </div>
+      <div id="success-message" class="msg msg-ok hidden" role="status">
+        <span>✓</span><span id="success-text"></span>
+      </div>
+ 
+      <form id="registro-form" novalidate autocomplete="on">
+ 
+        <div class="fg">
+          <label class="fl" for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" class="fi" required placeholder="Tu nombre y apellido" autocomplete="name">
+          <span class="ficon" style="pointer-events:none">✦</span>
+        </div>
+ 
+        <div class="fg">
+          <label class="fl" for="cedula">Cédula</label>
+          <input type="text" id="cedula" class="fi" required placeholder="Tu documento de identidad" autocomplete="username">
+          <span class="ficon" style="pointer-events:none">◎</span>
+        </div>
+ 
+        <div class="fg">
+          <label class="fl" for="password">Contraseña</label>
+          <input type="password" id="password" class="fi" required minlength="6" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+          <button type="button" id="toggle-pw" class="ficon" style="pointer-events:auto;cursor:pointer" aria-label="Mostrar contraseña">👁</button>
+          <div class="str-bar">
+            <div class="str-seg" id="ss1"></div>
+            <div class="str-seg" id="ss2"></div>
+            <div class="str-seg" id="ss3"></div>
+            <div class="str-seg" id="ss4"></div>
+          </div>
+        </div>
+ 
+        <div class="fg">
+          <label class="fl" for="cedula_referido">Código de referido <span class="opt-badge">Opcional</span></label>
+          <input type="text" id="cedula_referido" class="fi" placeholder="Cédula de quien te refiere">
+          <span class="ficon" style="pointer-events:none">⬡</span>
+        </div>
+ 
+        <button type="submit" class="btn-p" id="submit-btn">Crear Cuenta</button>
+ 
+      </form>
+ 
+      <p class="alink">¿Ya tienes cuenta? <a href="/login">Inicia sesión</a></p>
+ 
+    </div>
+  </div>
+ 
+</div>
+ 
+<script type="module">
+  import { api } from '/static/js/api.js';
+ 
+  const form       = document.getElementById('registro-form');
+  const btn        = document.getElementById('submit-btn');
+  const errDiv     = document.getElementById('error-message');
+  const errText    = document.getElementById('error-text');
+  const succDiv    = document.getElementById('success-message');
+  const succText   = document.getElementById('success-text');
+  const pwInput    = document.getElementById('password');
+  const togglePw   = document.getElementById('toggle-pw');
+  const segs       = [ss1, ss2, ss3, ss4];
+ 
+  togglePw.addEventListener('click', () => {
+    const show = pwInput.type === 'password';
+    pwInput.type = show ? 'text' : 'password';
+    togglePw.textContent = show ? '🙈' : '👁';
+  });
+ 
+  pwInput.addEventListener('input', () => {
+    const v = pwInput.value;
+    segs.forEach(s => (s.className = 'str-seg'));
+    if (!v) return;
+    let score = 0;
+    if (v.length >= 6)  score++;
+    if (v.length >= 10) score++;
+    if (/[A-Z]/.test(v) && /[0-9]/.test(v)) score++;
+    if (/[^A-Za-z0-9]/.test(v)) score++;
+    const cls = score <= 1 ? 'weak' : score <= 2 ? 'fair' : 'strong';
+    for (let i = 0; i < score; i++) segs[i].classList.add(cls);
+  });
+ 
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const nombre          = document.getElementById('nombre').value.trim();
+    const cedula          = document.getElementById('cedula').value.trim();
+    const password        = pwInput.value;
+    const cedula_referido = document.getElementById('cedula_referido').value.trim() || null;
+ 
+    btn.disabled = true;
+    btn.classList.add('ld');
+    errDiv.classList.add('hidden');
+    succDiv.classList.add('hidden');
+ 
+    try {
+      await api.auth.registro({ nombre, cedula, password, cedula_referido });
+      succText.textContent = '¡Cuenta creada! Redirigiendo al login...';
+      succDiv.classList.remove('hidden');
+      document.getElementById('s1').className = 'step done';
+      document.getElementById('s2').className = 'step active';
+      document.getElementById('l1').className = 'step-line active';
+      document.getElementById('l2').className = 'step-line active';
+      document.getElementById('s3').className = 'step done';
+      setTimeout(() => { window.location.href = '/login'; }, 1800);
+    } catch (err) {
+      errText.textContent = err.message;
+      errDiv.classList.remove('hidden');
+      btn.disabled = false;
+      btn.classList.remove('ld');
+    }
+  });
+</script>
+</body>
+</html>

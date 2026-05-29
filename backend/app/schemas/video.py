@@ -38,6 +38,10 @@ class VideoCreate(VideoBase):
 
 class VideoResponse(VideoBase):
     tipo: str = "pelicula"
+    imagen_url: str = ""
+    descripcion: str = ""
+    trailer_url: str = ""
+    precio_renta: float = 3.99
     clasificacion: Optional[ClasificacionResponse] = None
     categorias: list[CategoriaResponse] = []
 

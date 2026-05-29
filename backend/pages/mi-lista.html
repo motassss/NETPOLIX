@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Lista — NETPOLIX</title>
+  <link rel="stylesheet" href="/static/css/global.css">
+  <link rel="stylesheet" href="/static/css/dashboard.css">
+  <link rel="stylesheet" href="/static/css/perfil.css">
+</head>
+<body class="page-inner">
+  <nav class="navbar navbar-scrolled">
+    <a class="navbar-logo" href="/dashboard">NETPOLIX</a>
+    <button class="nav-menu-toggle" id="navMenuToggle" aria-label="Menú">☰</button>
+    <div class="navbar-links" id="navbarLinks">
+      <a href="/dashboard">Inicio</a>
+      <a href="/perfil">Perfil</a>
+    </div>
+    <div class="navbar-right">
+      <a href="/carrito" class="cart-btn" aria-label="Carrito">
+        🛒
+        <span class="cart-badge" id="cart-count">0</span>
+      </a>
+      <button class="btn-logout" id="btnLogout">Cerrar sesión</button>
+    </div>
+  </nav>
+
+  <main>
+    <section class="perfil-section lista-page">
+      <div class="section-header">
+        <h1 class="section-title page-heading">
+          Mi Lista <span id="listaContador" class="lista-count">(0)</span>
+        </h1>
+      </div>
+      <div class="mi-lista-grid" id="miListaGrid">
+        <div class="movie-card skeleton"></div>
+        <div class="movie-card skeleton"></div>
+        <div class="movie-card skeleton"></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/static/js/mi-lista.js"></script>
+</body>
+</html>

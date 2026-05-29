@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Perfil — NETPOLIX</title>
+  <link rel="stylesheet" href="/static/css/global.css">
+  <link rel="stylesheet" href="/static/css/navbar.css">
+  <link rel="stylesheet" href="/static/css/drawer.css">
+  <link rel="stylesheet" href="/static/css/dashboard.css">
+  <link rel="stylesheet" href="/static/css/perfil.css">
+</head>
+<body class="page-inner">
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-left">
+      <a class="navbar-logo" href="/dashboard">NETPOLIX</a>
+      <div class="navbar-links">
+        <a href="/dashboard" class="nav-link">Inicio</a>
+        <a href="/perfil" class="nav-link active">Perfil</a>
+      </div>
+    </div>
+    <div class="navbar-right">
+      <a href="/carrito" class="nav-cart"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="cart-badge" id="cartBadge">0</span></a>
+      <button type="button" class="nav-mi-lista" id="btnMiLista">Mi Lista</button>
+      <div class="nav-profile" id="navProfile">
+        <button type="button" class="profile-avatar" id="profileAvatar">U</button>
+        <div class="profile-dropdown" id="profileDropdown">
+          <div class="dropdown-header"><div class="dropdown-avatar" id="dropdownAvatar">U</div><div><p class="dropdown-name" id="dropdownName">Usuario</p><p class="dropdown-email" id="dropdownEmail">—</p></div></div>
+          <hr class="dropdown-divider">
+          <a href="/perfil" class="dropdown-item">👤 Mi perfil</a>
+          <a href="/carrito" class="dropdown-item">🛒 Mi carrito</a>
+          <hr class="dropdown-divider">
+          <button type="button" class="dropdown-item dropdown-logout" id="btnLogout">🚪 Cerrar sesión</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="perfil-hero">
+      <div class="perfil-avatar" id="perfilAvatar">XX</div>
+      <div class="perfil-info">
+        <h1 id="perfilNombre" class="perfil-nombre">—</h1>
+        <p id="perfilCedula" class="perfil-cedula">—</p>
+        <p class="perfil-ingreso">Miembro desde <span id="perfilIngreso">—</span></p>
+        <span id="perfilBadge" class="perfil-badge">Usuario</span>
+      </div>
+    </section>
+
+    <section class="perfil-section" id="config">
+      <h2 class="section-title">Estadísticas</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-number" id="statRentas">0</span>
+          <span class="stat-label">Rentas activas</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="statVistas">0</span>
+          <span class="stat-label">Películas vistas</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="statFavoritos">0</span>
+          <span class="stat-label">En Mi Lista</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="statGasto">$0</span>
+          <span class="stat-label">Gasto total</span>
+        </div>
+        <div class="stat-card stat-card-wide">
+          <span class="stat-number" id="statUltimaVistaTitulo" style="font-size:1rem;">Ninguna aún</span>
+          <span class="stat-label" id="statUltimaVistaFecha">Última vista</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="perfil-section">
+      <h2 class="section-title">Mis Rentas</h2>
+      <div class="rentas-grid" id="rentasRow"></div>
+    </section>
+
+    <section class="perfil-section">
+      <div class="section-header">
+        <h2 class="section-title">Historial</h2>
+        <button type="button" class="btn-text" onclick="limpiarHistorial()">Limpiar historial</button>
+      </div>
+      <div class="movies-row" id="historialRow"></div>
+    </section>
+
+    <section class="perfil-section">
+      <div class="section-header">
+        <h2 class="section-title">Mi Lista</h2>
+        <button type="button" class="btn-text" id="btnVerMiLista">Ver en panel →</button>
+      </div>
+      <div class="movies-row" id="favoritosRow"></div>
+    </section>
+
+    <section class="perfil-section">
+      <h2 class="section-title">Configuración</h2>
+      <div class="config-grid">
+        <div class="config-card">
+          <h3>Tema</h3>
+          <label class="theme-toggle">
+            <input type="checkbox" id="themeToggle">
+            <span>Modo claro</span>
+          </label>
+        </div>
+        <div class="config-card">
+          <h3>Nombre</h3>
+          <p id="configNombreActual" class="config-current">—</p>
+          <button type="button" class="btn-text" onclick="toggleForm('nombreForm')">Cambiar nombre</button>
+          <div id="nombreForm" class="config-form hidden">
+            <input type="text" id="inputNuevoNombre" class="config-input" placeholder="Nuevo nombre" maxlength="100">
+            <div class="config-form-actions">
+              <button type="button" class="btn-primary-sm" onclick="cambiarNombre()">Guardar</button>
+              <button type="button" class="btn-text" onclick="toggleForm('nombreForm')">Cancelar</button>
+            </div>
+          </div>
+        </div>
+        <div class="config-card">
+          <h3>Contraseña</h3>
+          <p class="config-current">Actualiza tu contraseña periódicamente</p>
+          <button type="button" class="btn-text" onclick="toggleForm('passwordForm')">Cambiar contraseña</button>
+          <div id="passwordForm" class="config-form hidden">
+            <input type="password" id="inputPasswordActual" class="config-input" placeholder="Contraseña actual">
+            <input type="password" id="inputPasswordNuevo" class="config-input" placeholder="Nueva contraseña">
+            <input type="password" id="inputPasswordConfirmar" class="config-input" placeholder="Confirmar">
+            <div class="config-form-actions">
+              <button type="button" class="btn-primary-sm" onclick="cambiarPassword()">Guardar</button>
+              <button type="button" class="btn-text" onclick="toggleForm('passwordForm')">Cancelar</button>
+            </div>
+          </div>
+        </div>
+        <div class="config-card config-card-danger">
+          <h3>Sesión</h3>
+          <button type="button" class="btn-text danger" onclick="logout()">Cerrar sesión</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="mi-lista-drawer" id="miListaDrawer">
+    <div class="drawer-header"><h2 class="drawer-title">❤️ Mi Lista</h2><button type="button" class="drawer-close" id="drawerClose">✕</button></div>
+    <div class="drawer-content" id="drawerContent"></div>
+    <div class="drawer-empty" id="drawerEmpty"><div class="drawer-empty-icon">🎬</div><p>Tu lista está vacía</p></div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script type="module" src="/static/js/perfil.js"></script>
+</body>
+</html>

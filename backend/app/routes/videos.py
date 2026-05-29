@@ -37,6 +37,46 @@ def crear_video(
     return service.create_video(datos)
 
 
+@router.get("/categorias")
+def listar_categorias(db: Session = Depends(get_db)):
+    from app.models.categoria import Categoria
+    return db.query(Categoria).all()
+
+@router.get("/categoria/{categoria_nombre}")
+def videos_por_categoria(
+    categoria_nombre: str,
+    db: Session = Depends(get_db),
+    _: Cliente = Depends(get_current_cliente),
+):
+    service = VideoService(db)
+    return service.listar_por_categoria(categoria_nombre)
+
+@router.get("/buscar")
+def buscar_videos(
+    q: str = Query(..., min_length=1),
+    db: Session = Depends(get_db),
+    _: Cliente = Depends(get_current_cliente),
+):
+    service = VideoService(db)
+    return service.buscar(q)
+
+@router.get("/tendencias")
+def tendencias(
+    db: Session = Depends(get_db),
+    _: Cliente = Depends(get_current_cliente),
+):
+    service = VideoService(db)
+    return service.tendencias()
+
+@router.get("/{isan}")
+def obtener_video(
+    isan: str,
+    db: Session = Depends(get_db),
+    _: Cliente = Depends(get_current_cliente),
+):
+    service = VideoService(db)
+    return service.obtener_por_isan(isan)
+
 @router.get("/{isan}/clasificacion")
 def ver_calificacion(isan: str, db: Session = Depends(get_db)):
     service = VideoService(db)

@@ -1,0 +1,134 @@
+INFO:     127.0.0.1:51758 - "GET /api/favoritos/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51758 - "GET /api/videos/tendencias HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51758 - "GET /api/videos/tendencias HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51758 - "GET /api/videos/categoria/Accion HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51758 - "GET /api/videos/categoria/Ciencia%20Ficcion HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51758 - "GET /api/videos/categoria/Terror HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51758 - "GET /api/videos/categoria/Drama HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51758 - "GET /api/videos/categoria/Comedia HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61594 - "GET /api/favoritos/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61594 - "GET /api/videos/tendencias HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61594 - "GET /api/videos/tendencias HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61594 - "GET /api/videos/categoria/Accion HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61594 - "GET /api/videos/categoria/Ciencia%20Ficcion HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61594 - "GET /api/videos/categoria/Terror HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61594 - "GET /api/videos/categoria/Drama HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61594 - "GET /api/videos/categoria/Comedia HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53065 - "GET /api/favoritos/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53065 - "GET /api/videos/tendencias HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53065 - "GET /api/videos/tendencias HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53065 - "GET /api/videos/categoria/Accion HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53065 - "GET /api/videos/categoria/Ciencia%20Ficcion HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53065 - "GET /api/videos/categoria/Terror HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53065 - "GET /api/videos/categoria/Drama HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53065 - "GET /api/videos/categoria/Comedia HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64887 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64887 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49868 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49868 - "GET /login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49868 - "GET /static/js/api.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53191 - "GET /static/js/auth.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59037 - "GET /registro HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62601 - "POST /auth/registro HTTP/1.1" 201 Created
+INFO:     127.0.0.1:63765 - "POST /auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63765 - "GET /dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63765 - "GET /static/css/dashboard.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62491 - "GET /static/js/dashboard.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57615 - "GET /static/img/placeholder.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57615 - "GET /api/favoritos/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57615 - "GET /videos/tendencias HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57615 - "GET /videos/tendencias HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57615 - "GET /videos/categoria/Accion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57615 - "GET /videos/categoria/Ciencia%20Ficcion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57615 - "GET /videos/categoria/Terror HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57615 - "GET /videos/categoria/Drama HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57615 - "GET /videos/categoria/Comedia HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55965 - "GET /videos/buscar?q=la HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55965 - "GET /videos/buscar?q=lala HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55965 - "GET /videos/buscar?q=lal HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55965 - "GET /videos/buscar?q=la HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57226 - "GET /videos/buscar?q=la%20la HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57226 - "GET /videos/tendencias HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57226 - "GET /videos/categoria/Accion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57226 - "GET /videos/categoria/Ciencia%20Ficcion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57226 - "GET /videos/categoria/Terror HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57226 - "GET /videos/categoria/Drama HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57226 - "GET /videos/categoria/Comedia HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59339 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59339 - "GET /login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59339 - "GET /static/js/api.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:51269 - "POST /auth/login HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:51269 - "GET /pages/login.html HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54525 - "POST /auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54525 - "GET /dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54525 - "GET /static/css/dashboard.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:50673 - "GET /static/js/dashboard.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55155 - "GET /static/img/placeholder.jpg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:50673 - "GET /api/favoritos/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50673 - "GET /videos/tendencias HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50673 - "GET /videos/tendencias HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50673 - "GET /videos/categoria/Accion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50673 - "GET /videos/categoria/Ciencia%20Ficcion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50673 - "GET /videos/categoria/Terror HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50673 - "GET /videos/categoria/Drama HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50673 - "GET /videos/categoria/Comedia HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64328 - "GET /dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64328 - "GET /api/favoritos/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64328 - "GET /videos/tendencias HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64328 - "GET /videos/tendencias HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64328 - "GET /videos/categoria/Accion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64328 - "GET /videos/categoria/Ciencia%20Ficcion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64328 - "GET /videos/categoria/Terror HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64328 - "GET /videos/categoria/Drama HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64328 - "GET /videos/categoria/Comedia HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59423 - "GET /api/favoritos/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59423 - "GET /videos/tendencias HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59423 - "GET /videos/tendencias HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59423 - "GET /videos/categoria/Accion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59423 - "GET /videos/categoria/Ciencia%20Ficcion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59423 - "GET /videos/categoria/Terror HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59423 - "GET /videos/categoria/Drama HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59423 - "GET /videos/categoria/Comedia HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49965 - "GET /static/img/inception.webp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59716 - "GET /static/js/dashboard.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59716 - "GET /api/favoritos/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59716 - "GET /videos/tendencias HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59716 - "GET /videos/tendencias HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59716 - "GET /videos/categoria/Accion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59716 - "GET /videos/categoria/Ciencia%20Ficcion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59716 - "GET /videos/categoria/Terror HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59716 - "GET /videos/categoria/Drama HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59716 - "GET /videos/categoria/Comedia HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58571 - "GET /api/favoritos/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58571 - "GET /videos/tendencias HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58571 - "GET /videos/tendencias HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58571 - "GET /videos/categoria/Accion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58571 - "GET /videos/categoria/Ciencia%20Ficcion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58571 - "GET /videos/categoria/Terror HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58571 - "GET /videos/categoria/Drama HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58571 - "GET /videos/categoria/Comedia HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58571 - "GET /videos/buscar?q=zombies HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58571 - "GET /videos/tendencias HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58571 - "GET /videos/categoria/Accion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58571 - "GET /videos/categoria/Ciencia%20Ficcion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58571 - "GET /videos/categoria/Terror HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58571 - "GET /videos/categoria/Drama HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58571 - "GET /videos/categoria/Comedia HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63617 - "GET /static/js/dashboard.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63617 - "GET /api/favoritos/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63617 - "GET /videos/tendencias HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63617 - "GET /videos/tendencias HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63617 - "GET /videos/categoria/Accion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63617 - "GET /videos/categoria/Ciencia%20Ficcion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63617 - "GET /videos/categoria/Terror HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63617 - "GET /videos/categoria/Drama HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63617 - "GET /videos/categoria/Comedia HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58115 - "GET /static/js/dashboard.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:58115 - "GET /api/favoritos/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58115 - "GET /videos/tendencias HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58115 - "GET /videos/tendencias HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58115 - "GET /videos/categoria/Accion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58115 - "GET /videos/categoria/Ciencia%20Ficcion HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58115 - "GET /videos/categoria/Terror HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58115 - "GET /videos/categoria/Drama HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58115 - "GET /videos/categoria/Comedia HTTP/1.1" 200 OK
