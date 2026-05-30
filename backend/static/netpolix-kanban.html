@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NETPOLIX — Kanban Board</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f5f4;
+  --surface: #ffffff;
+  --surface2: #fafaf9;
+  --surface3: #f0efed;
+  --border: #e2e0dc;
+  --border2: #cccac5;
+  --text: #1a1917;
+  --text2: #57534e;
+  --text3: #a8a29e;
+  --text4: #d6d3d1;
+
+  --red:    #dc2626;
+  --red-bg: #fef2f2;
+  --red-border: #fecaca;
+
+  --amber:    #d97706;
+  --amber-bg: #fffbeb;
+  --amber-border: #fde68a;
+
+  --blue:    #2563eb;
+  --blue-bg: #eff6ff;
+  --blue-border: #bfdbfe;
+
+  --violet:    #7c3aed;
+  --violet-bg: #f5f3ff;
+  --violet-border: #ddd6fe;
+
+  --green:    #16a34a;
+  --green-bg: #f0fdf4;
+  --green-border: #bbf7d0;
+
+  --slate:    #475569;
+  --slate-bg: #f8fafc;
+  --slate-border: #e2e8f0;
+
+  --orange:   #ea580c;
+  --orange-bg:#fff7ed;
+
+  --col-w: 280px;
+  --radius: 6px;
+  --radius-sm: 4px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 13px;
+  line-height: 1.5;
+}
+::-webkit-scrollbar { height: 6px; width: 6px; }
+::-webkit-scrollbar-track { background: var(--surface3); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+
+/* ── TOPBAR ── */
+.topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 0;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.topbar-logo {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  text-transform: uppercase;
+  padding-right: 20px;
+  border-right: 1px solid var(--border);
+  margin-right: 16px;
+}
+.topbar-logo span { color: var(--red); }
+.topbar-breadcrumb {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12.5px; color: var(--text3); font-weight: 400;
+}
+.topbar-breadcrumb .sep { color: var(--text4); }
+.topbar-breadcrumb .current { color: var(--text2); font-weight: 500; }
+.topbar-right {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 10px;
+}
+.badge-pill {
+  font-size: 11px; font-weight: 500;
+  padding: 3px 10px; border-radius: 20px;
+  letter-spacing: 0.02em;
+}
+.badge-sprint { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.badge-mvp    { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+.badge-cycle  { background: var(--surface3); color: var(--text2); border: 1px solid var(--border); }
+
+/* ── SUBBAR ── */
+.subbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  overflow-x: auto;
+}
+.stat-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px 20px;
+  border-right: 1px solid var(--border);
+  min-width: 90px;
+  gap: 1px;
+}
+.stat-cell:first-child { padding-left: 0; }
+.stat-val {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.1;
+}
+.stat-label {
+  font-size: 10.5px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+}
+.c-red    { color: var(--red); }
+.c-amber  { color: var(--amber); }
+.c-blue   { color: var(--blue); }
+.c-violet { color: var(--violet); }
+.c-green  { color: var(--green); }
+.c-slate  { color: var(--slate); }
+.c-orange { color: var(--orange); }
+
+.progress-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  margin-left: auto;
+  min-width: 220px;
+}
+.prog-label { font-size: 11px; color: var(--text3); white-space: nowrap; font-weight: 500; }
+.prog-track { flex: 1; height: 6px; background: var(--surface3); border-radius: 3px; overflow: hidden; border: 1px solid var(--border); }
+.prog-fill  { height: 100%; border-radius: 3px; background: var(--green); width: 58%; }
+.prog-pct   { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--text2); font-weight: 500; white-space: nowrap; }
+
+/* ── ROADMAP ── */
+.roadmap-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+.roadmap-bar-label {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text3);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  padding-right: 14px;
+  border-right: 1px solid var(--border);
+  margin-right: 4px;
+  white-space: nowrap;
+}
+.rm-card {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  background: var(--surface);
+  min-width: 180px;
+  position: relative;
+  overflow: hidden;
+}
+.rm-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+.rm-v1::after { background: var(--green); }
+.rm-v2::after { background: var(--blue); }
+.rm-v3::after { background: var(--violet); }
+
+.rm-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.rm-version { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
+.rm-v1 .rm-version { color: var(--green); }
+.rm-v2 .rm-version { color: var(--blue); }
+.rm-v3 .rm-version { color: var(--violet); }
+.rm-pct { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text3); }
+.rm-title { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.rm-desc { font-size: 11px; color: var(--text3); line-height: 1.45; margin-bottom: 8px; }
+.rm-track { height: 4px; background: var(--surface3); border-radius: 2px; overflow: hidden; border: 1px solid var(--border); }
+.rm-fill  { height: 100%; border-radius: 2px; }
+.rm-v1 .rm-fill { background: var(--green); width: 85%; }
+.rm-v2 .rm-fill { background: var(--blue); width: 30%; }
+.rm-v3 .rm-fill { background: var(--violet); width: 5%; }
+
+/* ── BOARD ── */
+.board-outer { padding: 20px 24px 40px; overflow-x: auto; }
+.board { display: flex; gap: 12px; align-items: flex-start; min-width: max-content; }
+
+/* ── COLUMN ── */
+.col { width: var(--col-w); display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
+.col-head {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  position: sticky; top: 0px; z-index: 10;
+  background: var(--bg);
+}
+.col-stripe {
+  width: 3px; height: 16px; border-radius: 2px; flex-shrink: 0;
+}
+.s-backlog  { background: var(--red); }
+.s-todo     { background: var(--amber); }
+.s-doing    { background: var(--blue); }
+.s-testing  { background: var(--violet); }
+.s-done     { background: var(--green); }
+.s-future   { background: var(--slate); }
+
+.col-name { font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text2); }
+.col-count {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px; font-weight: 500;
+  padding: 1px 7px; border-radius: 20px;
+  margin-left: auto;
+}
+.cnt-backlog  { background: var(--red-bg);    color: var(--red);    border: 1px solid var(--red-border); }
+.cnt-todo     { background: var(--amber-bg);  color: var(--amber);  border: 1px solid var(--amber-border); }
+.cnt-doing    { background: var(--blue-bg);   color: var(--blue);   border: 1px solid var(--blue-border); }
+.cnt-testing  { background: var(--violet-bg); color: var(--violet); border: 1px solid var(--violet-border); }
+.cnt-done     { background: var(--green-bg);  color: var(--green);  border: 1px solid var(--green-border); }
+.cnt-future   { background: var(--slate-bg);  color: var(--slate);  border: 1px solid var(--slate-border); }
+
+/* ── CARD ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: box-shadow 0.15s, border-color 0.15s, transform 0.1s;
+  position: relative;
+}
+.card:hover {
+  border-color: var(--border2);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07), 0 0 0 1px rgba(0,0,0,0.03);
+  transform: translateY(-1px);
+}
+.card-accent {
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+/* Epic colors — muted, professional */
+.ea1  { background: #dc2626; }
+.ea2  { background: #ea580c; }
+.ea3  { background: #d97706; }
+.ea4  { background: #16a34a; }
+.ea5  { background: #0891b2; }
+.ea6  { background: #2563eb; }
+.ea7  { background: #e11d48; }
+.ea8  { background: #7c3aed; }
+.ea9  { background: #db2777; }
+.ea10 { background: #64748b; }
+
+.card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 6px; margin-bottom: 6px; padding-left: 8px; }
+.card-id { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text4); font-weight: 400; flex-shrink: 0; margin-top: 1px; }
+.prio {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.05em;
+  padding: 1px 6px; border-radius: 3px; flex-shrink: 0;
+  text-transform: uppercase;
+}
+.p-crit   { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+.p-high   { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+.p-med    { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+.p-low    { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
+.p-done   { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+.p-future { background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; }
+
+.card-title {
+  font-size: 12.5px; font-weight: 500; color: var(--text);
+  line-height: 1.45; margin-bottom: 7px; padding-left: 8px;
+}
+.card-done .card-title { color: var(--text3); text-decoration: line-through; text-decoration-color: var(--border2); }
+
+.card-tags { display: flex; flex-wrap: wrap; gap: 3px; margin-bottom: 7px; padding-left: 8px; }
+.tag {
+  font-size: 10px; font-weight: 500;
+  padding: 1px 6px; border-radius: 3px;
+  letter-spacing: 0.02em;
+}
+.t-e1  { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+.t-e2  { background: #fff7ed; color: #9a3412; border: 1px solid #fed7aa; }
+.t-e3  { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+.t-e4  { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+.t-e5  { background: #ecfeff; color: #155e75; border: 1px solid #a5f3fc; }
+.t-e6  { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+.t-e7  { background: #fff1f2; color: #9f1239; border: 1px solid #fecdd3; }
+.t-e8  { background: #f5f3ff; color: #5b21b6; border: 1px solid #ddd6fe; }
+.t-e9  { background: #fdf2f8; color: #9d174d; border: 1px solid #fbcfe8; }
+.t-e10 { background: #f8fafc; color: #334155; border: 1px solid #e2e8f0; }
+.t-mvp { background: #fefce8; color: #713f12; border: 1px solid #fef08a; font-weight: 700; }
+.t-fe  { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+.t-be  { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+.t-bug { background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; }
+
+.card-footer { display: flex; align-items: center; justify-content: space-between; padding-left: 8px; }
+.card-effort { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--text3); }
+.card-dep { font-size: 10.5px; color: var(--text3); }
+.card-dep b { color: var(--amber); font-weight: 500; }
+
+.card-progress { margin-top: 7px; padding-left: 8px; }
+.cp-track { height: 3px; background: var(--surface3); border-radius: 2px; overflow: hidden; }
+.cp-fill  { height: 100%; border-radius: 2px; background: var(--blue); }
+
+/* ── LEGEND ── */
+.legend-bar {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex; flex-wrap: wrap; gap: 24px;
+}
+.lg-section {}
+.lg-title { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); font-weight: 600; margin-bottom: 7px; }
+.lg-items { display: flex; flex-wrap: wrap; gap: 5px; }
+.lg-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text2); }
+.lg-swatch { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="topbar-logo">NET<span>P</span>OLIX</div>
+  <div class="topbar-breadcrumb">
+    <span>Proyectos</span>
+    <span class="sep">/</span>
+    <span>NETPOLIX Platform</span>
+    <span class="sep">/</span>
+    <span class="current">Kanban Board</span>
+  </div>
+  <div class="topbar-right">
+    <span class="badge-pill badge-cycle">Sprint 3 · Mayo–Jun 2026</span>
+    <span class="badge-pill badge-mvp">MVP 85% listo</span>
+    <span class="badge-pill badge-sprint">58% completado</span>
+  </div>
+</header>
+
+<!-- STATS BAR -->
+<div class="subbar">
+  <div class="stat-cell">
+    <div class="stat-val">47</div>
+    <div class="stat-label">Total tareas</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-val c-red">8</div>
+    <div class="stat-label">Backlog</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-val c-amber">10</div>
+    <div class="stat-label">Por hacer</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-val c-blue">7</div>
+    <div class="stat-label">En desarrollo</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-val c-violet">4</div>
+    <div class="stat-label">En pruebas</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-val c-green">12</div>
+    <div class="stat-label">Terminado</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-val c-slate">6</div>
+    <div class="stat-label">Futuras vers.</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-val c-red">5</div>
+    <div class="stat-label">Bugs activos</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-val c-orange">9</div>
+    <div class="stat-label">Crítico MVP</div>
+  </div>
+  <div class="progress-cell">
+    <span class="prog-label">Progreso total</span>
+    <div class="prog-track"><div class="prog-fill"></div></div>
+    <span class="prog-pct">58%</span>
+  </div>
+</div>
+
+<!-- ROADMAP -->
+<div class="roadmap-bar">
+  <div class="roadmap-bar-label">Roadmap</div>
+
+  <div class="rm-card rm-v1">
+    <div class="rm-top">
+      <div class="rm-version">V 1.0 — MVP</div>
+      <span class="rm-pct">85%</span>
+    </div>
+    <div class="rm-title">Plataforma funcional core</div>
+    <div class="rm-desc">Login, catálogo, renta, carrito, Mi Lista, perfil básico, manual de usuario.</div>
+    <div class="rm-track"><div class="rm-fill"></div></div>
+  </div>
+
+  <div class="rm-card rm-v2">
+    <div class="rm-top">
+      <div class="rm-version">V 2.0 — PRO</div>
+      <span class="rm-pct">30%</span>
+    </div>
+    <div class="rm-title">Experiencia premium completa</div>
+    <div class="rm-desc">Panel admin, calificaciones, recomendaciones, búsqueda avanzada, responsive total.</div>
+    <div class="rm-track"><div class="rm-fill"></div></div>
+  </div>
+
+  <div class="rm-card rm-v3">
+    <div class="rm-top">
+      <div class="rm-version">V 3.0 — SCALE</div>
+      <span class="rm-pct">5%</span>
+    </div>
+    <div class="rm-title">Plataforma SaaS escalable</div>
+    <div class="rm-desc">IA de recomendaciones, referidos, comentarios, suscripción premium, API pública.</div>
+    <div class="rm-track"><div class="rm-fill"></div></div>
+  </div>
+</div>
+
+<!-- BOARD -->
+<div class="board-outer">
+<div class="board">
+
+  <!-- ══ BACKLOG ══ -->
+  <div class="col">
+    <div class="col-head">
+      <div class="col-stripe s-backlog"></div>
+      <span class="col-name">Backlog</span>
+      <span class="col-count cnt-backlog">8</span>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea7"></div>
+      <div class="card-header">
+        <span class="card-id">NP-001</span>
+        <span class="prio p-crit">Crítica</span>
+      </div>
+      <div class="card-title">Botón cerrar modal no responde correctamente</div>
+      <div class="card-tags">
+        <span class="tag t-e7">Bug</span>
+        <span class="tag t-mvp">MVP</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 2h</span>
+        <span class="card-dep">Dep: <b>NP-012</b></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea7"></div>
+      <div class="card-header">
+        <span class="card-id">NP-002</span>
+        <span class="prio p-crit">Crítica</span>
+      </div>
+      <div class="card-title">Modal bloquea scroll del body al cerrar</div>
+      <div class="card-tags">
+        <span class="tag t-e7">Bug</span>
+        <span class="tag t-mvp">MVP</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 1h</span>
+        <span class="card-dep">Dep: <b>NP-001</b></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea1"></div>
+      <div class="card-header">
+        <span class="card-id">NP-003</span>
+        <span class="prio p-high">Alta</span>
+      </div>
+      <div class="card-title">Responsive en móvil — navbar colapsada</div>
+      <div class="card-tags">
+        <span class="tag t-e1">UX/UI</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 5h</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea8"></div>
+      <div class="card-header">
+        <span class="card-id">NP-004</span>
+        <span class="prio p-high">Alta</span>
+      </div>
+      <div class="card-title">Skeleton loading en cards del catálogo</div>
+      <div class="card-tags">
+        <span class="tag t-e8">Premium</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 4h</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea9"></div>
+      <div class="card-header">
+        <span class="card-id">NP-005</span>
+        <span class="prio p-high">Alta</span>
+      </div>
+      <div class="card-title">Panel administrador — gestión de películas</div>
+      <div class="card-tags">
+        <span class="tag t-e9">Admin</span>
+        <span class="tag t-be">BE</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 16h</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea7"></div>
+      <div class="card-header">
+        <span class="card-id">NP-006</span>
+        <span class="prio p-med">Media</span>
+      </div>
+      <div class="card-title">Error visual en cards con imágenes faltantes</div>
+      <div class="card-tags">
+        <span class="tag t-e7">Bug</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 2h</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea2"></div>
+      <div class="card-header">
+        <span class="card-id">NP-007</span>
+        <span class="prio p-med">Media</span>
+      </div>
+      <div class="card-title">Filtros avanzados en catálogo por año y duración</div>
+      <div class="card-tags">
+        <span class="tag t-e2">Películas</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 8h</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea5"></div>
+      <div class="card-header">
+        <span class="card-id">NP-008</span>
+        <span class="prio p-low">Baja</span>
+      </div>
+      <div class="card-title">Cambio de contraseña desde perfil</div>
+      <div class="card-tags">
+        <span class="tag t-e5">Perfil</span>
+        <span class="tag t-be">BE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 6h</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ POR HACER ══ -->
+  <div class="col">
+    <div class="col-head">
+      <div class="col-stripe s-todo"></div>
+      <span class="col-name">Por hacer</span>
+      <span class="col-count cnt-todo">10</span>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea1"></div>
+      <div class="card-header">
+        <span class="card-id">NP-009</span>
+        <span class="prio p-crit">Crítica</span>
+      </div>
+      <div class="card-title">Cerrar sesión — limpiar storage y redirigir a /login</div>
+      <div class="card-tags">
+        <span class="tag t-e1">UX/UI</span>
+        <span class="tag t-mvp">MVP</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 1h</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea3"></div>
+      <div class="card-header">
+        <span class="card-id">NP-010</span>
+        <span class="prio p-high">Alta</span>
+      </div>
+      <div class="card-title">Verificar acceso a película en backend antes de reproducir</div>
+      <div class="card-tags">
+        <span class="tag t-e3">Renta</span>
+        <span class="tag t-mvp">MVP</span>
+        <span class="tag t-be">BE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 3h</span>
+        <span class="card-dep">Dep: <b>NP-022</b></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea1"></div>
+      <div class="card-header">
+        <span class="card-id">NP-011</span>
+        <span class="prio p-high">Alta</span>
+      </div>
+      <div class="card-title">Navbar sticky con blur al hacer scroll</div>
+      <div class="card-tags">
+        <span class="tag t-e1">UX/UI</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 2h</span>
+      </div>
+      <div class="card-progress">
+        <div class="cp-track"><div class="cp-fill" style="width:40%"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea8"></div>
+      <div class="card-header">
+        <span class="card-id">NP-012</span>
+        <span class="prio p-high">Alta</span>
+      </div>
+      <div class="card-title">Animaciones de entrada en cards — fade + scale</div>
+      <div class="card-tags">
+        <span class="tag t-e8">Premium</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 3h</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea4"></div>
+      <div class="card-header">
+        <span class="card-id">NP-013</span>
+        <span class="prio p-high">Alta</span>
+      </div>
+      <div class="card-title">Animación al quitar película de Mi Lista (slide-out)</div>
+      <div class="card-tags">
+        <span class="tag t-e4">Mi Lista</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 2h</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea5"></div>
+      <div class="card-header">
+        <span class="card-id">NP-014</span>
+        <span class="prio p-high">Alta</span>
+      </div>
+      <div class="card-title">Estadísticas de usuario — gasto total calculado</div>
+      <div class="card-tags">
+        <span class="tag t-e5">Perfil</span>
+        <span class="tag t-be">BE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 4h</span>
+        <span class="card-dep">Dep: <b>NP-022</b></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea3"></div>
+      <div class="card-header">
+        <span class="card-id">NP-015</span>
+        <span class="prio p-med">Media</span>
+      </div>
+      <div class="card-title">Vaciar carrito completo con confirmación</div>
+      <div class="card-tags">
+        <span class="tag t-e3">Renta</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 2h</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea2"></div>
+      <div class="card-header">
+        <span class="card-id">NP-016</span>
+        <span class="prio p-med">Media</span>
+      </div>
+      <div class="card-title">Fecha de expiración visible en modal de película rentada</div>
+      <div class="card-tags">
+        <span class="tag t-e2">Películas</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 2h</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea8"></div>
+      <div class="card-header">
+        <span class="card-id">NP-017</span>
+        <span class="prio p-med">Media</span>
+      </div>
+      <div class="card-title">Toast notifications — sistema global reutilizable</div>
+      <div class="card-tags">
+        <span class="tag t-e8">Premium</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 3h</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea6"></div>
+      <div class="card-header">
+        <span class="card-id">NP-018</span>
+        <span class="prio p-low">Baja</span>
+      </div>
+      <div class="card-title">Toggle modo oscuro/claro — visual sin backend</div>
+      <div class="card-tags">
+        <span class="tag t-e6">Config</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 4h</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ EN DESARROLLO ══ -->
+  <div class="col">
+    <div class="col-head">
+      <div class="col-stripe s-doing"></div>
+      <span class="col-name">En desarrollo</span>
+      <span class="col-count cnt-doing">7</span>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea1"></div>
+      <div class="card-header">
+        <span class="card-id">NP-019</span>
+        <span class="prio p-crit">Crítica</span>
+      </div>
+      <div class="card-title">Navbar profesional — restructura completa HTML/CSS</div>
+      <div class="card-tags">
+        <span class="tag t-e1">UX/UI</span>
+        <span class="tag t-mvp">MVP</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 8h</span>
+      </div>
+      <div class="card-progress">
+        <div class="cp-track"><div class="cp-fill" style="width:75%"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea3"></div>
+      <div class="card-header">
+        <span class="card-id">NP-020</span>
+        <span class="prio p-high">Alta</span>
+      </div>
+      <div class="card-title">Badge dinámico del carrito en navbar</div>
+      <div class="card-tags">
+        <span class="tag t-e3">Renta</span>
+        <span class="tag t-mvp">MVP</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 2h</span>
+      </div>
+      <div class="card-progress">
+        <div class="cp-track"><div class="cp-fill" style="width:90%"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea2"></div>
+      <div class="card-header">
+        <span class="card-id">NP-021</span>
+        <span class="prio p-high">Alta</span>
+      </div>
+      <div class="card-title">Mejorar hero section — gradients + botones premium</div>
+      <div class="card-tags">
+        <span class="tag t-e2">Películas</span>
+        <span class="tag t-e8">Premium</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 5h</span>
+      </div>
+      <div class="card-progress">
+        <div class="cp-track"><div class="cp-fill" style="width:60%"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea3"></div>
+      <div class="card-header">
+        <span class="card-id">NP-022</span>
+        <span class="prio p-high">Alta</span>
+      </div>
+      <div class="card-title">Endpoint /rentas/verificar — control de acceso real</div>
+      <div class="card-tags">
+        <span class="tag t-e3">Renta</span>
+        <span class="tag t-mvp">MVP</span>
+        <span class="tag t-be">BE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 4h</span>
+      </div>
+      <div class="card-progress">
+        <div class="cp-track"><div class="cp-fill" style="width:80%"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea5"></div>
+      <div class="card-header">
+        <span class="card-id">NP-023</span>
+        <span class="prio p-high">Alta</span>
+      </div>
+      <div class="card-title">Historial de vistas — registro automático al abrir modal</div>
+      <div class="card-tags">
+        <span class="tag t-e5">Perfil</span>
+        <span class="tag t-be">BE</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 6h</span>
+      </div>
+      <div class="card-progress">
+        <div class="cp-track"><div class="cp-fill" style="width:50%"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea4"></div>
+      <div class="card-header">
+        <span class="card-id">NP-024</span>
+        <span class="prio p-high">Alta</span>
+      </div>
+      <div class="card-title">Mi Lista — drawer lateral reemplaza navegación</div>
+      <div class="card-tags">
+        <span class="tag t-e4">Mi Lista</span>
+        <span class="tag t-mvp">MVP</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 6h</span>
+      </div>
+      <div class="card-progress">
+        <div class="cp-track"><div class="cp-fill" style="width:95%"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea8"></div>
+      <div class="card-header">
+        <span class="card-id">NP-025</span>
+        <span class="prio p-med">Media</span>
+      </div>
+      <div class="card-title">Variables CSS globales — paleta unificada y tipografía</div>
+      <div class="card-tags">
+        <span class="tag t-e8">Premium</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ 3h</span>
+      </div>
+      <div class="card-progress">
+        <div class="cp-track"><div class="cp-fill" style="width:70%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ EN PRUEBAS ══ -->
+  <div class="col">
+    <div class="col-head">
+      <div class="col-stripe s-testing"></div>
+      <span class="col-name">En pruebas</span>
+      <span class="col-count cnt-testing">4</span>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea3"></div>
+      <div class="card-header">
+        <span class="card-id">NP-026</span>
+        <span class="prio p-crit">Crítica</span>
+      </div>
+      <div class="card-title">Flujo completo de renta — carrito → pago → desbloqueo</div>
+      <div class="card-tags">
+        <span class="tag t-e3">Renta</span>
+        <span class="tag t-mvp">MVP</span>
+        <span class="tag t-be">BE</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ QA 4h</span>
+      </div>
+      <div class="card-progress">
+        <div class="cp-track"><div class="cp-fill" style="width:85%"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea4"></div>
+      <div class="card-header">
+        <span class="card-id">NP-027</span>
+        <span class="prio p-high">Alta</span>
+      </div>
+      <div class="card-title">Persistencia de favoritos entre sesiones</div>
+      <div class="card-tags">
+        <span class="tag t-e4">Mi Lista</span>
+        <span class="tag t-be">BE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ QA 2h</span>
+      </div>
+      <div class="card-progress">
+        <div class="cp-track"><div class="cp-fill" style="width:90%"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea1"></div>
+      <div class="card-header">
+        <span class="card-id">NP-028</span>
+        <span class="prio p-high">Alta</span>
+      </div>
+      <div class="card-title">Botón Demo funcional en login</div>
+      <div class="card-tags">
+        <span class="tag t-e1">UX/UI</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ QA 1h</span>
+      </div>
+      <div class="card-progress">
+        <div class="cp-track"><div class="cp-fill" style="width:100%"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea5"></div>
+      <div class="card-header">
+        <span class="card-id">NP-029</span>
+        <span class="prio p-med">Media</span>
+      </div>
+      <div class="card-title">Perfil — sección Mis Rentas activas con expiración</div>
+      <div class="card-tags">
+        <span class="tag t-e5">Perfil</span>
+        <span class="tag t-fe">FE</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-effort">⏱ QA 2h</span>
+      </div>
+      <div class="card-progress">
+        <div class="cp-track"><div class="cp-fill" style="width:80%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TERMINADO ══ -->
+  <div class="col">
+    <div class="col-head">
+      <div class="col-stripe s-done"></div>
+      <span class="col-name">Terminado</span>
+      <span class="col-count cnt-done">12</span>
+    </div>
+
+    <div class="card card-done">
+      <div class="card-accent ea1"></div>
+      <div class="card-header">
+        <span class="card-id">NP-030</span>
+        <span class="prio p-done">✓ Done</span>
+      </div>
+      <div class="card-title">Sistema de autenticación JWT</div>
+      <div class="card-tags"><span class="tag t-e1">UX/UI</span><span class="tag t-be">BE</span></div>
+      <div class="card-footer"><span class="card-effort">⏱ 8h</span></div>
+    </div>
+
+    <div class="card card-done">
+      <div class="card-accent ea1"></div>
+      <div class="card-header">
+        <span class="card-id">NP-031</span>
+        <span class="prio p-done">✓ Done</span>
+      </div>
+      <div class="card-title">Pantalla de login diseño premium</div>
+      <div class="card-tags"><span class="tag t-e1">UX/UI</span><span class="tag t-fe">FE</span></div>
+      <div class="card-footer"><span class="card-effort">⏱ 6h</span></div>
+    </div>
+
+    <div class="card card-done">
+      <div class="card-accent ea1"></div>
+      <div class="card-header">
+        <span class="card-id">NP-032</span>
+        <span class="prio p-done">✓ Done</span>
+      </div>
+      <div class="card-title">Registro multistep con validaciones</div>
+      <div class="card-tags"><span class="tag t-e1">UX/UI</span><span class="tag t-fe">FE</span><span class="tag t-be">BE</span></div>
+      <div class="card-footer"><span class="card-effort">⏱ 10h</span></div>
+    </div>
+
+    <div class="card card-done">
+      <div class="card-accent ea2"></div>
+      <div class="card-header">
+        <span class="card-id">NP-033</span>
+        <span class="prio p-done">✓ Done</span>
+      </div>
+      <div class="card-title">Catálogo con categorías dinámicas desde API</div>
+      <div class="card-tags"><span class="tag t-e2">Películas</span><span class="tag t-be">BE</span></div>
+      <div class="card-footer"><span class="card-effort">⏱ 12h</span></div>
+    </div>
+
+    <div class="card card-done">
+      <div class="card-accent ea2"></div>
+      <div class="card-header">
+        <span class="card-id">NP-034</span>
+        <span class="prio p-done">✓ Done</span>
+      </div>
+      <div class="card-title">Modal de película con info completa</div>
+      <div class="card-tags"><span class="tag t-e2">Películas</span><span class="tag t-fe">FE</span></div>
+      <div class="card-footer"><span class="card-effort">⏱ 8h</span></div>
+    </div>
+
+    <div class="card card-done">
+      <div class="card-accent ea3"></div>
+      <div class="card-header">
+        <span class="card-id">NP-035</span>
+        <span class="prio p-done">✓ Done</span>
+      </div>
+      <div class="card-title">Carrito de renta — agregar, eliminar, total</div>
+      <div class="card-tags"><span class="tag t-e3">Renta</span><span class="tag t-fe">FE</span><span class="tag t-be">BE</span></div>
+      <div class="card-footer"><span class="card-effort">⏱ 14h</span></div>
+    </div>
+
+    <div class="card card-done">
+      <div class="card-accent ea3"></div>
+      <div class="card-header">
+        <span class="card-id">NP-036</span>
+        <span class="prio p-done">✓ Done</span>
+      </div>
+      <div class="card-title">Pago simulado y desbloqueo de películas</div>
+      <div class="card-tags"><span class="tag t-e3">Renta</span><span class="tag t-mvp">MVP</span><span class="tag t-be">BE</span></div>
+      <div class="card-footer"><span class="card-effort">⏱ 8h</span></div>
+    </div>
+
+    <div class="card card-done">
+      <div class="card-accent ea4"></div>
+      <div class="card-header">
+        <span class="card-id">NP-037</span>
+        <span class="prio p-done">✓ Done</span>
+      </div>
+      <div class="card-title">Mi Lista — agregar y quitar favoritos</div>
+      <div class="card-tags"><span class="tag t-e4">Mi Lista</span><span class="tag t-fe">FE</span><span class="tag t-be">BE</span></div>
+      <div class="card-footer"><span class="card-effort">⏱ 10h</span></div>
+    </div>
+
+    <div class="card card-done">
+      <div class="card-accent ea5"></div>
+      <div class="card-header">
+        <span class="card-id">NP-038</span>
+        <span class="prio p-done">✓ Done</span>
+      </div>
+      <div class="card-title">Perfil de usuario — estadísticas básicas</div>
+      <div class="card-tags"><span class="tag t-e5">Perfil</span><span class="tag t-fe">FE</span></div>
+      <div class="card-footer"><span class="card-effort">⏱ 10h</span></div>
+    </div>
+
+    <div class="card card-done">
+      <div class="card-accent ea2"></div>
+      <div class="card-header">
+        <span class="card-id">NP-039</span>
+        <span class="prio p-done">✓ Done</span>
+      </div>
+      <div class="card-title">Buscador de películas en tiempo real</div>
+      <div class="card-tags"><span class="tag t-e2">Películas</span><span class="tag t-fe">FE</span></div>
+      <div class="card-footer"><span class="card-effort">⏱ 5h</span></div>
+    </div>
+
+    <div class="card card-done">
+      <div class="card-accent ea8"></div>
+      <div class="card-header">
+        <span class="card-id">NP-040</span>
+        <span class="prio p-done">✓ Done</span>
+      </div>
+      <div class="card-title">Cards de películas con hover effects y badge precio</div>
+      <div class="card-tags"><span class="tag t-e8">Premium</span><span class="tag t-fe">FE</span></div>
+      <div class="card-footer"><span class="card-effort">⏱ 6h</span></div>
+    </div>
+
+    <div class="card card-done">
+      <div class="card-accent ea1"></div>
+      <div class="card-header">
+        <span class="card-id">NP-041</span>
+        <span class="prio p-done">✓ Done</span>
+      </div>
+      <div class="card-title">Manual de usuario interactivo HTML</div>
+      <div class="card-tags"><span class="tag t-e1">UX/UI</span><span class="tag t-fe">FE</span></div>
+      <div class="card-footer"><span class="card-effort">⏱ 4h</span></div>
+    </div>
+  </div>
+
+  <!-- ══ FUTURAS VERSIONES ══ -->
+  <div class="col">
+    <div class="col-head">
+      <div class="col-stripe s-future"></div>
+      <span class="col-name">Futuras versiones</span>
+      <span class="col-count cnt-future">6</span>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea10"></div>
+      <div class="card-header">
+        <span class="card-id">NP-042</span>
+        <span class="prio p-future">V3.0</span>
+      </div>
+      <div class="card-title">Motor de recomendaciones con IA</div>
+      <div class="card-tags"><span class="tag t-e10">Futuro</span><span class="tag t-be">BE</span></div>
+      <div class="card-footer"><span class="card-effort">⏱ 40h+</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea10"></div>
+      <div class="card-header">
+        <span class="card-id">NP-043</span>
+        <span class="prio p-future">V2.0</span>
+      </div>
+      <div class="card-title">Sistema de calificaciones y reseñas</div>
+      <div class="card-tags"><span class="tag t-e10">Futuro</span><span class="tag t-be">BE</span><span class="tag t-fe">FE</span></div>
+      <div class="card-footer"><span class="card-effort">⏱ 20h</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea10"></div>
+      <div class="card-header">
+        <span class="card-id">NP-044</span>
+        <span class="prio p-future">V2.0</span>
+      </div>
+      <div class="card-title">Comentarios en películas</div>
+      <div class="card-tags"><span class="tag t-e10">Futuro</span><span class="tag t-be">BE</span></div>
+      <div class="card-footer"><span class="card-effort">⏱ 16h</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea10"></div>
+      <div class="card-header">
+        <span class="card-id">NP-045</span>
+        <span class="prio p-future">V3.0</span>
+      </div>
+      <div class="card-title">Sistema de referidos con bonificaciones</div>
+      <div class="card-tags"><span class="tag t-e10">Futuro</span><span class="tag t-be">BE</span></div>
+      <div class="card-footer"><span class="card-effort">⏱ 24h</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea10"></div>
+      <div class="card-header">
+        <span class="card-id">NP-046</span>
+        <span class="prio p-future">V3.0</span>
+      </div>
+      <div class="card-title">Suscripción premium mensual</div>
+      <div class="card-tags"><span class="tag t-e10">Futuro</span><span class="tag t-be">BE</span><span class="tag t-fe">FE</span></div>
+      <div class="card-footer"><span class="card-effort">⏱ 32h</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent ea10"></div>
+      <div class="card-header">
+        <span class="card-id">NP-047</span>
+        <span class="prio p-future">V2.0</span>
+      </div>
+      <div class="card-title">Compartir listas de películas entre usuarios</div>
+      <div class="card-tags"><span class="tag t-e10">Futuro</span><span class="tag t-fe">FE</span></div>
+      <div class="card-footer"><span class="card-effort">⏱ 12h</span></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend-bar">
+  <div class="lg-section">
+    <div class="lg-title">Epics</div>
+    <div class="lg-items">
+      <div class="lg-item"><div class="lg-swatch" style="background:#dc2626"></div>E1 UX/UI</div>
+      <div class="lg-item"><div class="lg-swatch" style="background:#ea580c"></div>E2 Películas</div>
+      <div class="lg-item"><div class="lg-swatch" style="background:#d97706"></div>E3 Renta</div>
+      <div class="lg-item"><div class="lg-swatch" style="background:#16a34a"></div>E4 Mi Lista</div>
+      <div class="lg-item"><div class="lg-swatch" style="background:#0891b2"></div>E5 Perfil</div>
+      <div class="lg-item"><div class="lg-swatch" style="background:#2563eb"></div>E6 Config</div>
+      <div class="lg-item"><div class="lg-swatch" style="background:#e11d48"></div>E7 Bugs</div>
+      <div class="lg-item"><div class="lg-swatch" style="background:#7c3aed"></div>E8 Premium</div>
+      <div class="lg-item"><div class="lg-swatch" style="background:#db2777"></div>E9 Admin</div>
+      <div class="lg-item"><div class="lg-swatch" style="background:#64748b"></div>E10 Futuro</div>
+    </div>
+  </div>
+  <div class="lg-section">
+    <div class="lg-title">Prioridades</div>
+    <div class="lg-items">
+      <span class="prio p-crit">Crítica</span>
+      <span class="prio p-high">Alta</span>
+      <span class="prio p-med">Media</span>
+      <span class="prio p-low">Baja</span>
+      <span class="prio p-done">✓ Done</span>
+      <span class="prio p-future">Vx.0</span>
+    </div>
+  </div>
+  <div class="lg-section">
+    <div class="lg-title">Stack</div>
+    <div class="lg-items">
+      <span class="tag t-fe">FE</span>
+      <span class="tag t-be">BE</span>
+      <span class="tag t-mvp">MVP</span>
+      <span class="tag t-bug">Bug</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
