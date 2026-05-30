@@ -1,6 +1,7 @@
 # 🎬 NETPOLIX — Retrospectiva Sprint 3
 
 **Proyecto:** NETPOLIX · Plataforma de Streaming con Sistema de Renta de Películas  
+https://netpolix.onrender.com :)
 **Sprint:** 3 · Mayo – Junio 2026  
 **Desarrollador:** Esteban Alejandro Pérez  
 **Institución:** Politécnico Grancolombiano · Ingeniería de Sistemas  
